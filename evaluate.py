@@ -25,7 +25,7 @@ max_length = max(max_in_length, max_out_length) + 1
 batch_size=len(in_)
 vocab_size=len(vocab_dict) - 2
 hidden_layer_dim=10
-max_length=20
+max_length=10
 
 model = load_model('model.h5')
 
@@ -59,17 +59,20 @@ def reverse_num(texts):
 def decode(in_):
     out_ = np.ones((1,max_length)).astype("int16")
     out_[0,0] = EOS
-    for i in range(max_length+1):
+    for i in range(max_length):
         out_seq = model.predict([in_, out_], batch_size=1)
-        if np.argmax(out_seq[0,i]) == EOS or i == max_length:
+        if np.argmax(out_seq[0,i]) == EOS or i == max_length-1:
             return out_
         else:
             out_[0,i+1] = np.argmax(out_seq[0, i])
 
 
 while True:
-    input_seq = [input()]
-    in_ = np.array(num(input_seq))
-    out_seq = decode(in_)
-    output = reverse_num(out_seq)
-    print(output[0])
+    try:
+        input_seq = [input()]
+        in_ = np.array(num(input_seq))
+        out_seq = decode(in_)
+        output = reverse_num(out_seq)
+        print(output[0])
+    except EOFError:
+        break
