@@ -10,7 +10,7 @@ keys = [] #stores key pair of speaker and listener's dialogue
 def line_to_dic(): 
     with codecs.open("cornell movie-dialogs corpus/movie_lines.txt","r", "Shift-JIS", "ignore") as f: #ignores multibyted characters
         lines = [s.strip() for s in f.readlines()] #splits txt data by lines
-        for line in lines:
+        for count, line in enumerate(lines):
             tag = line.split(" +++$+++ ")[0] #the first section is the key for the dialogue
             utter = line.split(" +++$+++ ")[-1] #the last section is the dialogue
             utter_set = set(utter) #multibyte letters and special characters are not wanted
