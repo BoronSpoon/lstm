@@ -1,33 +1,47 @@
-import os
-import glob
-from PIL import Image
-import numpy as np
+import codecs
 import _pickle as pickle
-import random
-import matplotlib.pyplot as plt
+#place unzipped "cornell movie-dialogs corpus" directory in the same directory as this script
 
-x = np.arange(-20,20,0.01)
-x += np.array([random.random()/100 for i in range(len(x))])
-y = np.sinc(x)
-plt.plot(x,y)
-plt.show()
+in_ = [] #speaker's dialogue
+out_ = [] #listener's response
+utters = {} #dictionary of all the dialogues with dialogue number as keys
+keys = [] #stores key pair of speaker and listener's dialogue
 
-train_input = []
-train_output = []
-test_input = []
-test_output = []
+def line_to_dic(): #
+    with codecs.open("cornell movie-dialogs corpus/movie_lines.txt","r", "Shift-JIS", "ignore") as f: #ignores multibyted characters
+        lines = [s.strip() for s in f.readlines()] #splits txt data by lines
+        for line in lines:
+            tag = line.split(" +++$+++ ")[0] #the first section is the key for the dialogue
+            utter = line.split(" +++$+++ ")[-1] #the last section is the dialogue
+            utters[tag] = utter #connects the key and the dialogue
 
-test_indices = random.sample(list(range(len(x))), int(len(x)/4))
-test_input = x[test_indices]
-test_output = y[test_indices]
-train_input = np.delete(x,list(test_indices))
-train_output = np.delete(y, list(test_indices))
+def conversation_key_pair_maker():
+    with codecs.open("cornell movie-dialogs corpus/movie_conversations.txt","r", "Shift-JIS", "ignore") as f: #ignores multibyted characters
+        lines = [s.strip() for s in f.readlines()] #splits txt data by lines
+        for line in lines:
+            keys_list_raw = line.split(" +++$+++ ")[-1] #gets the last section of the line which is like "['L0', 'L81']"
+            keys_list_cropped = keys_list_raw.replace("['","")
+            keys_list_cropped = keys_list_cropped.replace("']","") #removes the brackets at each end of the keys_list_raw ex.) "L0', 'L81"
+            keys_raw = keys_list_cropped.split("', '") #splits keys_list_cropped and turns it into the list of keys
+            for i,j in zip(keys_raw[:-1],keys_raw[1:]): #i,j represents the key for the speaker and the listener 
+                keys.append([i,j])
 
-with open('train_input.pickle', mode='wb') as f:
-    pickle.dump(train_input[:,np.newaxis], f)
-with open('train_output.pickle', mode='wb') as f:
-    pickle.dump(train_output[:,np.newaxis], f)
-with open('test_input.pickle', mode='wb') as f:
-    pickle.dump(test_input[:,np.newaxis], f)
-with open('test_output.pickle', mode='wb') as f:
-    pickle.dump(test_output[:,np.newaxis], f)
+def conversation_pair_maker(): #uses the key pair to make a list of the speaker's and the listener's dialogue
+    for key_pair in keys:
+        in_key, out_key = key_pair
+        in_.append(utters[in_key])
+        out_.append(utters[out_key])
+
+#executes the preceeding three functions
+line_to_dic()
+conversation_key_pair_maker()
+conversation_pair_maker()
+
+#stores in_ and out_ in pickle format
+with open("in_.pickle", mode='wb') as f:
+    pickle.dump(in_, f)
+with open("out_.pickle", mode='wb') as f:
+    pickle.dump(out_, f)
+
+#prints how many dialogue pairs exist
+print(len(in_), len(out_))

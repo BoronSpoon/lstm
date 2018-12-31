@@ -18,7 +18,6 @@ vocab.remove(" ")
 
 vocab = list(vocab)
 
-#2363
 vocab_dict = dict(zip(vocab, list(range(1, 2362+1))))
 vocab_dict["§"] = 0
 vocab_dict[" "] = 1
