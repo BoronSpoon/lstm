@@ -12,16 +12,14 @@ with open("utters_list.pickle", mode='rb') as f:
 
 all_ = utters_list #all_ contains all the dialogue
 
-vocab = set([]) #vocab contains all the vocabulary
+vocab = [] #vocab contains all the vocabulary
 for dialogue in all_:
-    c_list = dialogue.split(" ")
-    c = set(c_list)
-    vocab = vocab | c #not to make a duplication in the vocab list
+    vocab.extend(dialogue.split(" "))
 
-vocab = list(vocab) #list is more convenient; it is ordered
+vocab = list(set(vocab)) #remove the duplication
 vocab.sort() #sorts the vocab
 vocab_length = len(vocab) #number of words in the vocabulary
-print(vocab_length,vocab[100])
+print(vocab_length)
 
 vocab_dict = dict(zip(vocab, list(range(2, vocab_length+1)))) #key:word element:integer
 vocab_dict["<EOS>"] = 0 #repersents "EOS"(End of Statement)

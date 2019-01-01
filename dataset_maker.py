@@ -15,7 +15,7 @@ def line_to_dic():
             tag = line.split(" +++$+++ ")[0] #the first section is the key for the dialogue
             utter = line.split(" +++$+++ ")[-1] #the last section is the dialogue
             utter_set = set(utter) #multibyte letters and special characters are not wanted
-            if utter_set <= set(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','.',',','\"','\'','!','?',"-",";"," "]): 
+            if utter_set <= set(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','.',',','\'','!','?',"-",";"," "]): 
                 utters[tag] = utter #connects the key and the dialogue
                 utters_list.append(utter) #adds utter to the utter list
 
