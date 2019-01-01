@@ -8,6 +8,8 @@ import _pickle as pickle
 import numpy as np
 import matplotlib.pyplot as plt
 from statistics import mean
+np.set_printoptions(threshold=100000)
+np.set_printoptions(linewidth=800)
 
 #import conversation data and dictionaries
 with open("in_.pickle", mode='rb') as f:
@@ -36,7 +38,7 @@ max_length=10 #max words for the input sequence
 def num(texts):
     new_texts = []
     for count, text in enumerate(texts):
-        text = " ".split(text)
+        text = text.split(" ")
         text_len = len(text)
         new_texts.append([vocab_dict[text[i]] if i < text_len else PAD for i in range(max_length)]) #fills the list with PAD until the last element
     return new_texts
@@ -51,30 +53,37 @@ def generator(mini_batch_size):
         indices = np.random.randint(batch_size, size=mini_batch_size)
         x_input_ = x_input[indices,:]
         y_input_ = y_input[indices,:]
-        y_output = np.eye(vocab_size)[y_output_temp[indices,:]]
+        y_output = np.eye(vocab_size,dtype="float16")[y_output_temp[indices,:]]
         yield [np.array(x_input_), np.array(y_input_)], np.array(y_output)
 
 loss = []
 
 #resets training periodically to prevent outofmemory error
-for i in range(1000):
+for i in range(5):
     print("batch", str(i))
-    model = load_model('model.h5')
+    model = keras.models.load_model('model.h5')
 
-    early_stopping = keras.callbacks.EarlyStopping(patience=0, verbose=1)
+    #early_stopping = keras.callbacks.EarlyStopping(patience=0, verbose=1)
 
     #training phase
     history = model.fit_generator(
         generator=generator(mini_batch_size=10),
         steps_per_epoch=1,
-        epochs=500,
+        epochs=1000,
         verbose=2)
 
     #saves the model
     model.save("model.h5")
-    model.save('model.h5')
 
-    #loss.append(mean(history.history['loss']))
-    #plt.plot(loss)
-    #plt.pause(.001)
+    loss.append(mean(history.history['loss']))
+
+#plots the loss and val_loss
+plt.xlabel("epochs")
+plt.ylabel("loss")
+plt.plot(loss,label="loss")
+plt.title('loss')
+
+#saves the plot into png and displays the plot
+plt.savefig('train.png', pad_inches=0.1) #pad_inches is used to prevent the output png from having excess padding
+plt.show()
 

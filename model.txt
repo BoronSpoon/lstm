@@ -1,7 +1,3 @@
-# LSTM seq2seq
-
-## model summary
-<pre>
 __________________________________________________________________________________________________
 Layer (type)                    Output Shape         Param #     Connected to                     
 ==================================================================================================
@@ -25,11 +21,3 @@ Total params: 3,658,750
 Trainable params: 3,658,750
 Non-trainable params: 0
 __________________________________________________________________________________________________
-</pre>
-
-## training result
-Loss.   
-![train result](train.png?raw=true "train result")
-
-## evaluation result
-Testing of the seq2seq model.

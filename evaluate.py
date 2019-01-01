@@ -61,6 +61,7 @@ def decode(in_):
     out_[0,0] = EOS
     for i in range(max_length):
         out_seq = model.predict([in_, out_], batch_size=1)
+        print(out_seq)
         if np.argmax(out_seq[0,i]) == EOS or i == max_length-1:
             return out_
         else:

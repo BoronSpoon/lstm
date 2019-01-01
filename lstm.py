@@ -59,7 +59,13 @@ decoder_outputs = TimeDistributed(dense)(output)
 
 #defines the model with encoder and decoder inputs as inputs and decoder outputs as outputs
 model = Model([encoder_inputs, decoder_inputs], decoder_outputs)
-print(model.summary())
+
+#saves the model summary into txt file
+with open("model.txt", mode='w') as f:
+    stringlist = []
+    model.summary(print_fn=lambda x: stringlist.append(x))
+    str_model_summary = "\n".join(stringlist)
+    f.write(str_model_summary)
 
 #defines the optimizer and loss
 model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
@@ -77,7 +83,7 @@ def generator(mini_batch_size):
 history = model.fit_generator(
     generator=generator(mini_batch_size=10),
     steps_per_epoch=1,
-    epochs=500,
+    epochs=10,
     verbose=2)
 
 #saves the model
