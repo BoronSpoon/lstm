@@ -5,6 +5,7 @@ import _pickle as pickle
 in_ = [] #speaker's dialogue
 out_ = [] #listener's response
 utters = {} #dictionary of all the dialogues with dialogue number as keys
+utters_list = [] #list of all the dialogues
 keys = [] #stores key pair of speaker and listener's dialogue
 
 def line_to_dic(): 
@@ -16,6 +17,7 @@ def line_to_dic():
             utter_set = set(utter) #multibyte letters and special characters are not wanted
             if utter_set <= set(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','.',',','\"','\'','!','?',"-",";"," "]): 
                 utters[tag] = utter #connects the key and the dialogue
+                utters_list.append(utter) #adds utter to the utter list
 
 def conversation_key_pair_maker():
     with codecs.open("cornell movie-dialogs corpus/movie_conversations.txt","r", "Shift-JIS", "ignore") as f: #ignores multibyted characters
@@ -43,11 +45,13 @@ line_to_dic()
 conversation_key_pair_maker()
 conversation_pair_maker()
 
-#stores in_ and out_ in pickle format
+#stores in_ and out_ and utter_list in pickle format
 with open("in_.pickle", mode='wb') as f:
     pickle.dump(in_, f)
 with open("out_.pickle", mode='wb') as f:
     pickle.dump(out_, f)
+with open("utters_list.pickle", mode='wb') as f:
+    pickle.dump(utters_list, f)
 
 #prints how many dialogue pairs exist
 print(len(in_), len(out_))

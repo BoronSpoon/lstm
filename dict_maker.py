@@ -7,8 +7,10 @@ with open("in_.pickle", mode='rb') as f:
     in_ = pickle.load(f)
 with open("out_.pickle", mode='rb') as f:
     out_ = pickle.load(f)
+with open("utters_list.pickle", mode='rb') as f:
+    utters_list = pickle.load(f)
 
-all_ = in_ + [out_[-1]] #all_ contains all the dialogue
+all_ = utters_list #all_ contains all the dialogue
 
 vocab = set([]) #vocab contains all the vocabulary
 for dialogue in all_:

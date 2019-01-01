@@ -32,7 +32,7 @@ max_length = max(max_in_length, max_out_length) + 1 #this is the max number of v
 batch_size=len(in_) #represents the number of dialogue pairs
 vocab_size=len(vocab_dict) - 2 #number of vocabulary except for PAD and EOS
 hidden_layer_dim=10 #number of hidden_layers
-max_length=10 #max words for the input sequence
+max_length=20 #max words for the input sequence
 
 #turns dialogue into list of keys(integers)
 def num(texts):
