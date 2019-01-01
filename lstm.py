@@ -42,7 +42,7 @@ def num(texts):
 
 x_input = np.array(num(in_)) #input of encoder
 y_input = np.array(num(["<EOS>" + " " + i for i in out_])) #input of decoder (starts with EOS(End of Sequence))
-y_output_temp = np.array(num([i + " " + "<EOS>" if len(i) < max_length else (i[:max_length-1] + " " + "<EOS>") for i in out_])) #output of decoder (ends with EOS(End of Sequence))
+y_output_temp = np.array(num([i + " " + "<EOS>" for i in out_])) #output of decoder (ends with EOS(End of Sequence))
 
 #encder part
 encoder_inputs = Input(shape=(max_length,))

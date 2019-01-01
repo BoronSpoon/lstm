@@ -21,10 +21,10 @@ vocab.sort() #sorts the vocab
 vocab_length = len(vocab) #number of words in the vocabulary
 print(vocab_length)
 
-vocab_dict = dict(zip(vocab, list(range(2, vocab_length+1)))) #key:word element:integer
+vocab_dict = dict(zip(vocab, list(range(2, vocab_length+2)))) #key:word element:integer
 vocab_dict["<EOS>"] = 0 #repersents "EOS"(End of Statement)
 vocab_dict[" "] = 1 #represents "space"
-r_vocab_dict = dict(zip(list(range(2, vocab_length+1)), vocab)) #key:integer element:word
+r_vocab_dict = dict(zip(list(range(2, vocab_length+2)), vocab)) #key:integer element:word
 r_vocab_dict[0] = "<EOS>" #repersents "EOS"(End of Statement)
 r_vocab_dict[1] = " " #represents "space"
 
