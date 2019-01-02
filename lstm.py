@@ -27,8 +27,8 @@ max_length = max(max_in_length, max_out_length) + 1 #this is the max number of v
 
 batch_size=len(in_) #represents the number of dialogue pairs
 vocab_size=len(vocab_dict) - 2 #number of vocabulary except for PAD and EOS
-hidden_layer_dim=10 #number of hidden_layers
-max_length=20 #max words for the input sequence
+hidden_layer_dim=50 #number of hidden_layers
+max_length=15 #max words for the input sequence
 
 #turns dialogue into list of keys(integers)
 def num(texts):
@@ -81,9 +81,9 @@ def generator(mini_batch_size):
 
 #training phase
 history = model.fit_generator(
-    generator=generator(mini_batch_size=10),
+    generator=generator(mini_batch_size=5),
     steps_per_epoch=1,
-    epochs=10,
+    epochs=1,
     verbose=2)
 
 #saves the model

@@ -31,8 +31,8 @@ max_length = max(max_in_length, max_out_length) + 1 #this is the max number of v
 
 batch_size=len(in_) #represents the number of dialogue pairs
 vocab_size=len(vocab_dict) - 2 #number of vocabulary except for PAD and EOS
-hidden_layer_dim=10 #number of hidden_layers
-max_length=20 #max words for the input sequence
+hidden_layer_dim=50 #number of hidden_layers
+max_length=15 #max words for the input sequence
 
 #turns dialogue into list of keys(integers)
 def num(texts):
@@ -46,7 +46,7 @@ def num(texts):
 
 x_input = np.array(num(in_)) #input of encoder
 y_input = np.array(num(["<EOS>" + " " + i for i in out_])) #input of decoder (starts with EOS(End of Sequence))
-y_output_temp = np.array(num([i + " " + "<EOS>" if len(i) < max_length else (i[:max_length-1] + " " + "<EOS>") for i in out_])) #output of decoder (ends with EOS(End of Sequence))
+y_output_temp = np.array(num([i + " " + "<EOS>" for i in out_])) #output of decoder (ends with EOS(End of Sequence))
 
 def generator(mini_batch_size):
     while True:
@@ -59,7 +59,11 @@ def generator(mini_batch_size):
 loss = []
 
 #resets training periodically to prevent outofmemory error
-for i in range(5):
+for i in range(20):
+    try:
+        del model
+    except NameError:
+        pass
     print("batch", str(i))
     model = keras.models.load_model('model.h5')
 
@@ -67,9 +71,9 @@ for i in range(5):
 
     #training phase
     history = model.fit_generator(
-        generator=generator(mini_batch_size=10),
+        generator=generator(mini_batch_size=5),
         steps_per_epoch=1,
-        epochs=1000,
+        epochs=100,
         verbose=2)
 
     #saves the model

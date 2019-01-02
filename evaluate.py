@@ -24,8 +24,8 @@ max_length = max(max_in_length, max_out_length) + 1
 
 batch_size=len(in_)
 vocab_size=len(vocab_dict) - 2
-hidden_layer_dim=10
-max_length=10
+hidden_layer_dim=50
+max_length=15
 
 model = load_model('model.h5')
 
@@ -61,7 +61,6 @@ def decode(in_):
     out_[0,0] = EOS
     for i in range(max_length):
         out_seq = model.predict([in_, out_], batch_size=1)
-        print(out_seq)
         if np.argmax(out_seq[0,i]) == EOS or i == max_length-1:
             return out_
         else:
