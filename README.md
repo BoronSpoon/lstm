@@ -1,4 +1,5 @@
 # LSTM seq2seq
+## MAJOR BUG. This model outputs the same result for any input.
 
 ## model summary
 <pre>
